@@ -119,7 +119,7 @@ impl<'a> CoreOptions<'a> {
 #[macro_export]
 macro_rules! new_coreopts {
     ($syntax: expr, $summary: expr, $long_help: expr) => (
-        uucore::coreopts::CoreOptions::new(uucore::coreopts::HelpText {
+        uucore::util::coreopts::CoreOptions::new(uucore::util::coreopts::HelpText {
             name: executable!(),
             version: env!("CARGO_PKG_VERSION"),
             syntax: $syntax,
@@ -129,7 +129,7 @@ macro_rules! new_coreopts {
         })
     );
     ($syntax: expr, $summary: expr, $long_help: expr, $display_usage: expr) => (
-        uucore::coreopts::CoreOptions::new(uucore::coreopts::HelpText {
+        uucore::util::coreopts::CoreOptions::new(uucore::util::coreopts::HelpText {
             name: executable!(),
             version: env!("CARGO_PKG_VERSION"),
             syntax: $syntax,
