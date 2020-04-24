@@ -16,7 +16,7 @@ impl syn::parse::Parse for Tokens {
 }
 
 #[proc_macro]
-pub fn make_main(stream: proc_macro::TokenStream) -> proc_macro::TokenStream {
+pub fn main(stream: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let Tokens { expr } = syn::parse_macro_input!(stream as Tokens);
     // eprintln!("expr={:?}", expr);
     let expr = match expr {
