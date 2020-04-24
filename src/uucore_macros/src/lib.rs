@@ -18,10 +18,10 @@ impl syn::parse::Parse for Tokens {
 #[proc_macro]
 pub fn make_main(stream: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let Tokens { expr } = syn::parse_macro_input!(stream as Tokens);
-    println!("expr={:?}", expr);
+    // eprintln!("expr={:?}", expr);
     let expr = match expr {
         syn::Expr::Lit(expr) => {
-            println!("found Expr::Lit => {:?}", expr);
+            // eprintln!("found Expr::Lit => {:?}", expr);
             match expr.lit {
                 syn::Lit::Str(ref lit) => {
                     let mut s = lit.value();
@@ -32,11 +32,10 @@ pub fn make_main(stream: proc_macro::TokenStream) -> proc_macro::TokenStream {
             }
         },
         syn::Expr::Path(expr) => {
-            println!("found Expr::Path => {:?}", expr);
+            // eprintln!("found Expr::Path => {:?}", expr);
             let i = &expr.path.segments.last().unwrap().ident;
-            println!("... i => {:?}", i);
+            // eprintln!("... i => {:?}", i);
             if i.to_string() != "uumain" {
-                println!("not equal");
                 syn::parse_quote!( #expr::uumain )
             } else {
                 expr
@@ -45,7 +44,7 @@ pub fn make_main(stream: proc_macro::TokenStream) -> proc_macro::TokenStream {
         _ => panic!(),
     };
     let f = quote::quote!{ #expr(uucore::args().collect()) };
-    println!("f = {:?}", f);
+    // eprintln!("f = {:?}", f);
     let result = quote::quote! {
         fn main() {
             use std::io::Write;

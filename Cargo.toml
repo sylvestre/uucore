@@ -19,7 +19,7 @@ travis-ci = { repository = "uutils/uucore" }
 path="src/lib/lib.rs"
 
 [workspace]
-members=["src/uucore-macros"]
+members=["src/uucore_macros"]
 
 [dependencies]
 dunce = "1.0.0"

@@ -1,5 +1,5 @@
 [package]
-name = "uucore-macros"
+name = "uucore_macros"
 version = "0.0.1"
 authors = []
 license = "MIT"
