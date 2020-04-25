@@ -3,7 +3,7 @@ extern crate proc_macro;
 // spell-checker:ignore () sigpipe uucore uumain
 
 // ref: <https://dev.to/naufraghi/procedural-macro-in-rust-101-k3f> @@ <http://archive.is/Vbr5e>
-// ToDO: add path construction from LitStr as <https://oschwald.github.io/maxminddb-rust/syn/struct.LitStr.html> @@ <http://archive.is/8YDua>
+// ref: [path construction from LitStr](https://oschwald.github.io/maxminddb-rust/syn/struct.LitStr.html) @@ <http://archive.is/8YDua>
 
 struct Tokens {
     expr: syn::Expr,
