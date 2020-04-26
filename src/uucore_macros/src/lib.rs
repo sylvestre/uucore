@@ -11,7 +11,9 @@ struct Tokens {
 
 impl syn::parse::Parse for Tokens {
     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
-        Ok(Tokens { expr: input.parse()? })
+        Ok(Tokens {
+            expr: input.parse()?,
+        })
     }
 }
 
@@ -25,12 +27,16 @@ pub fn main(stream: proc_macro::TokenStream) -> proc_macro::TokenStream {
             match expr.lit {
                 syn::Lit::Str(ref lit) => {
                     let mut s = lit.value();
-                    if !s.ends_with("::uumain") { s += "::uumain"; }
-                    syn::LitStr::new(&s, proc_macro2::Span::call_site()).parse().unwrap()
-                },
+                    if !s.ends_with("::uumain") {
+                        s += "::uumain";
+                    }
+                    syn::LitStr::new(&s, proc_macro2::Span::call_site())
+                        .parse()
+                        .unwrap()
+                }
                 _ => panic!(),
             }
-        },
+        }
         syn::Expr::Path(expr) => {
             // eprintln!("found Expr::Path => {:?}", expr);
             let i = &expr.path.segments.last().unwrap().ident;
@@ -40,10 +46,10 @@ pub fn main(stream: proc_macro::TokenStream) -> proc_macro::TokenStream {
             } else {
                 expr
             }
-        },
+        }
         _ => panic!(),
     };
-    let f = quote::quote!{ #expr(uucore::args().collect()) };
+    let f = quote::quote! { #expr(uucore::args().collect()) };
     // eprintln!("f = {:?}", f);
     let result = quote::quote! {
         fn main() {
