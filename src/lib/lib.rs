@@ -1,67 +1,68 @@
+//## external crates
+
 extern crate wild;
 
-pub fn args() -> impl Iterator<Item=String> {
-    wild::args()
-}
-
-#[cfg(feature = "libc")]
-pub extern crate libc;
-#[cfg(feature = "winapi")]
-pub extern crate winapi;
+// * feature-gated external crates
 #[cfg(feature = "failure")]
 extern crate failure;
 #[cfg(feature = "failure_derive")]
-#[macro_use]
 extern crate failure_derive;
+#[cfg(all(feature = "lazy_static", target_os = "linux"))]
+extern crate lazy_static;
+#[cfg(feature = "libc")]
+pub extern crate libc;
 #[cfg(feature = "nix")]
 extern crate nix;
-#[cfg(all(feature = "lazy_static", target_os = "linux"))]
-#[macro_use]
-extern crate lazy_static;
 #[cfg(feature = "platform-info")]
 extern crate platform_info;
+#[cfg(feature = "winapi")]
+pub extern crate winapi;
 
-#[macro_use]
-#[path = "features/macros.rs"]
-mod macros;
+//## internal modules
 
-#[macro_use]
-#[path = "mods/coreopts.rs"]
-pub mod coreopts;
+mod features; // modularized feature-gated code
+mod mods; // core cross-platform modules
 
-#[path = "mods/panic.rs"]
-pub mod panic;
+// * crate macros (macro_rules-type)
+pub use mods::macros;
 
-#[cfg(feature = "fs")]
-#[path = "features/fs.rs"]
-pub mod fs;
+// * cross-platform modules
+pub use mods::coreopts;
+pub use mods::panic;
+
+// * feature-gated modules
 #[cfg(feature = "encoding")]
-#[path = "features/encoding.rs"]
-pub mod encoding;
+pub use features::encoding;
+#[cfg(feature = "fs")]
+pub use features::fs;
 #[cfg(feature = "parse_time")]
-#[path = "features/parse_time.rs"]
-pub mod parse_time;
-
-#[cfg(all(not(windows), feature = "mode"))]
-#[path = "features/mode.rs"]
-pub mod mode;
-#[cfg(all(unix, not(target_os = "fuchsia"), not(target_env="musl"), feature = "utmpx"))]
-#[path = "features/utmpx.rs"]
-pub mod utmpx;
-#[cfg(all(unix, feature = "entries"))]
-#[path = "features/entries.rs"]
-pub mod entries;
-#[cfg(all(unix, feature = "process"))]
-#[path = "features/process.rs"]
-pub mod process;
-#[cfg(all(unix, not(target_os = "fuchsia"), feature = "signals"))]
-#[path = "features/signals.rs"]
-pub mod signals;
-
+pub use features::parse_time;
 #[cfg(feature = "zero-copy")]
-#[path = "features/zero_copy/mod.rs"]
-pub mod zero_copy;
+pub use features::zero_copy;
 
+// * (platform-specific) feature-gated modules
+// ** non-windows
+#[cfg(all(not(windows), feature = "mode"))]
+pub use features::mode;
+// ** unix-only
+#[cfg(all(unix, feature = "entries"))]
+pub use features::entries;
+#[cfg(all(unix, feature = "process"))]
+pub use features::process;
+#[cfg(all(unix, not(target_os = "fuchsia"), feature = "signals"))]
+pub use features::signals;
+#[cfg(all(
+    unix,
+    not(target_os = "fuchsia"),
+    not(target_env = "musl"),
+    feature = "utmpx"
+))]
+pub use features::utmpx;
+// ** windows-only
 #[cfg(all(windows, feature = "wide"))]
-#[path = "features/wide.rs"]
-pub mod wide;
+pub use features::wide;
+
+// args() ...
+pub fn args() -> impl Iterator<Item = String> {
+    wild::args()
+}
