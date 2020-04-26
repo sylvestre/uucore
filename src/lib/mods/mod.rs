@@ -1,3 +1,5 @@
+// ::mods ~ module
+
 pub mod macros;
 
 pub mod coreopts;

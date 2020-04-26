@@ -1,3 +1,5 @@
+// uucore ~ library
+
 //## external crates
 
 extern crate wild;

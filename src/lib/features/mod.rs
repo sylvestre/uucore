@@ -1,3 +1,5 @@
+// ::features ~ module
+
 #[cfg(feature = "encoding")]
 pub mod encoding;
 #[cfg(feature = "entries")]
