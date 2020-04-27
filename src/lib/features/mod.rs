@@ -1,4 +1,6 @@
-// ::features ~ module
+// features ~ feature-gated modules (core/bundler file)
+
+// spell-checker:ignore (uucore/uutils) coreopts libc musl utmpx uucore uutils winapi
 
 #[cfg(feature = "encoding")]
 pub mod encoding;

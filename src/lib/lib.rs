@@ -1,4 +1,6 @@
-// uucore ~ library
+// library ~ (core/bundler file)
+
+// spell-checker:ignore (uucore/uutils) coreopts libc musl utmpx uucore uutils winapi
 
 //## external crates
 
@@ -22,10 +24,10 @@ pub extern crate winapi;
 
 //## internal modules
 
-mod features; // modularized feature-gated code
+mod features; // feature-gated code modules
 mod mods; // core cross-platform modules
 
-// * crate macros (macro_rules-type)
+// * crate macros (macro_rules-type; exported to `crate::...`)
 pub use mods::macros;
 
 // * cross-platform modules
@@ -63,6 +65,8 @@ pub use features::utmpx;
 // ** windows-only
 #[cfg(all(windows, feature = "wide"))]
 pub use features::wide;
+
+//## core functions
 
 // args() ...
 pub fn args() -> impl Iterator<Item = String> {
