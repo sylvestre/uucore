@@ -13,12 +13,14 @@ extern crate failure;
 extern crate failure_derive;
 #[cfg(all(feature = "lazy_static", target_os = "linux"))]
 extern crate lazy_static;
-#[cfg(feature = "libc")]
-pub extern crate libc;
 #[cfg(feature = "nix")]
 extern crate nix;
 #[cfg(feature = "platform-info")]
 extern crate platform_info;
+
+// * feature-gated external crates (re-shared as public internal modules)
+#[cfg(feature = "libc")]
+pub extern crate libc;
 #[cfg(feature = "winapi")]
 pub extern crate winapi;
 
