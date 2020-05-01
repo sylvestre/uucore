@@ -39,9 +39,9 @@ pub fn main(stream: proc_macro::TokenStream) -> proc_macro::TokenStream {
         }
         syn::Expr::Path(expr) => {
             // eprintln!("found Expr::Path => {:?}", expr);
-            let i = &expr.path.segments.last().unwrap().ident;
+            // let i = &expr.path.segments.last().unwrap().ident;
             // eprintln!("... i => {:?}", i);
-            if i.to_string() != "uumain" {
+            if &expr.path.segments.last().unwrap().ident.to_string() != "uumain" {
                 syn::parse_quote!( #expr::uumain )
             } else {
                 expr
