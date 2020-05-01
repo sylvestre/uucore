@@ -20,5 +20,5 @@ pub mod signals;
 pub mod utmpx;
 #[cfg(feature = "wide")]
 pub mod wide;
-#[cfg(feature = "zero_copy")]
+#[cfg(feature = "zero-copy")]
 pub mod zero_copy;
