@@ -4,21 +4,31 @@
 
 #[cfg(feature = "encoding")]
 pub mod encoding;
-#[cfg(feature = "entries")]
-pub mod entries;
 #[cfg(feature = "fs")]
 pub mod fs;
-#[cfg(feature = "mode")]
-pub mod mode;
 #[cfg(feature = "parse_time")]
 pub mod parse_time;
-#[cfg(feature = "process")]
-pub mod process;
-#[cfg(feature = "signals")]
-pub mod signals;
-#[cfg(feature = "utmpx")]
-pub mod utmpx;
-#[cfg(feature = "wide")]
-pub mod wide;
 #[cfg(feature = "zero-copy")]
 pub mod zero_copy;
+
+// * (platform-specific) feature-gated modules
+// ** non-windows
+#[cfg(all(not(windows), feature = "mode"))]
+pub mod mode;
+// ** unix-only
+#[cfg(feature = "entries")]
+pub mod entries;
+#[cfg(all(unix, feature = "process"))]
+pub mod process;
+#[cfg(all(unix, not(target_os = "fuchsia"), feature = "signals"))]
+pub mod signals;
+#[cfg(all(
+    unix,
+    not(target_os = "fuchsia"),
+    not(target_env = "musl"),
+    feature = "utmpx"
+))]
+pub mod utmpx;
+// ** windows-only
+#[cfg(all(windows, feature = "wide"))]
+pub mod wide;
