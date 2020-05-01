@@ -16,7 +16,7 @@ pub mod zero_copy;
 #[cfg(all(not(windows), feature = "mode"))]
 pub mod mode;
 // ** unix-only
-#[cfg(feature = "entries")]
+#[cfg(all(unix, feature = "entries"))]
 pub mod entries;
 #[cfg(all(unix, feature = "process"))]
 pub mod process;
