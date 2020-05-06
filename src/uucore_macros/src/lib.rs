@@ -1,9 +1,10 @@
 extern crate proc_macro;
 
-// spell-checker:ignore () sigpipe uucore uumain
+// spell-checker:ignore () SIGPIPE uucore uumain uutils
 
-// ref: <https://dev.to/naufraghi/procedural-macro-in-rust-101-k3f> @@ <http://archive.is/Vbr5e>
-// ref: [path construction from LitStr](https://oschwald.github.io/maxminddb-rust/syn/struct.LitStr.html) @@ <http://archive.is/8YDua>
+//## rust proc-macro background info
+//* ref: <https://dev.to/naufraghi/procedural-macro-in-rust-101-k3f> @@ <http://archive.is/Vbr5e>
+//* ref: [path construction from LitStr](https://oschwald.github.io/maxminddb-rust/syn/struct.LitStr.html) @@ <http://archive.is/8YDua>
 
 struct Tokens {
     expr: syn::Expr,
@@ -17,10 +18,16 @@ impl syn::parse::Parse for Tokens {
     }
 }
 
+// main!( EXPR )
+// generates a `main()` function for utilities within the uutils group
+// EXPR == syn::Expr::Lit::String | syn::Expr::Path::Ident ~ EXPR contains the location of the utility `uumain()` function
+//* for future use of "eager" macros and more generic use, EXPR may be in either STRING or IDENT form
+//* for ease-of-use, the trailing "::uumain" is optional and will be added if needed
 #[proc_macro]
 pub fn main(stream: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let Tokens { expr } = syn::parse_macro_input!(stream as Tokens);
     // eprintln!("expr={:?}", expr);
+    // match EXPR as a string literal or an ident path, o/w panic!()
     let expr = match expr {
         syn::Expr::Lit(expr) => {
             // eprintln!("found Expr::Lit => {:?}", expr);
@@ -51,6 +58,7 @@ pub fn main(stream: proc_macro::TokenStream) -> proc_macro::TokenStream {
     };
     let f = quote::quote! { #expr(uucore::args().collect()) };
     // eprintln!("f = {:?}", f);
+    // generate a uutils utility `main()` function, tailored for the calling utility
     let result = quote::quote! {
         fn main() {
             use std::io::Write;
