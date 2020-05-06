@@ -3,7 +3,7 @@ name = "uucore"
 version = "0.0.2"
 authors = ["uutils developers"]
 license = "MIT"
-description = "Common cross-platform code used by various uutils projects"
+description = "uutils ~ 'core' uutils code library (cross-platform)"
 
 homepage = "https://github.com/uutils/uucore"
 repository = "https://github.com/uutils/uucore"
