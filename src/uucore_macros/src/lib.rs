@@ -54,9 +54,9 @@ pub fn main(stream: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let result = quote::quote! {
         fn main() {
             use std::io::Write;
-            uucore::panic::mute_sigpipe_panic();
-            let code = #f;
-            std::io::stdout().flush().expect("could not flush stdout");
+            uucore::panic::mute_sigpipe_panic(); // suppress extraneous error output for SIGPIPE failures/panics
+            let code = #f; // execute utility code
+            std::io::stdout().flush().expect("could not flush stdout"); // (defensively) flush stdout for utility prior to exit; see <https://github.com/rust-lang/rust/issues/23818>
             std::process::exit(code);
         }
     };
