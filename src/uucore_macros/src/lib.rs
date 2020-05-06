@@ -26,11 +26,9 @@ impl syn::parse::Parse for Tokens {
 #[proc_macro]
 pub fn main(stream: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let Tokens { expr } = syn::parse_macro_input!(stream as Tokens);
-    // eprintln!("expr={:?}", expr);
     // match EXPR as a string literal or an ident path, o/w panic!()
     let expr = match expr {
         syn::Expr::Lit(expr) => {
-            // eprintln!("found Expr::Lit => {:?}", expr);
             match expr.lit {
                 syn::Lit::Str(ref lit) => {
                     let mut s = lit.value();
@@ -45,9 +43,6 @@ pub fn main(stream: proc_macro::TokenStream) -> proc_macro::TokenStream {
             }
         }
         syn::Expr::Path(expr) => {
-            // eprintln!("found Expr::Path => {:?}", expr);
-            // let i = &expr.path.segments.last().unwrap().ident;
-            // eprintln!("... i => {:?}", i);
             if &expr.path.segments.last().unwrap().ident.to_string() != "uumain" {
                 syn::parse_quote!( #expr::uumain )
             } else {
@@ -57,7 +52,6 @@ pub fn main(stream: proc_macro::TokenStream) -> proc_macro::TokenStream {
         _ => panic!(),
     };
     let f = quote::quote! { #expr(uucore::args().collect()) };
-    // eprintln!("f = {:?}", f);
     // generate a uutils utility `main()` function, tailored for the calling utility
     let result = quote::quote! {
         fn main() {
