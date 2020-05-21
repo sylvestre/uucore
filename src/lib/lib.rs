@@ -26,11 +26,9 @@ pub extern crate winapi;
 
 //## internal modules
 
+mod macros; // crate macros (macro_rules-type; exported to `crate::...`)
 mod features; // feature-gated code modules
 mod mods; // core cross-platform modules
-
-// * crate macros (macro_rules-type; exported to `crate::...`)
-pub use mods::macros;
 
 // * cross-platform modules
 pub use mods::coreopts;
