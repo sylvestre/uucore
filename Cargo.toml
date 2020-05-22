@@ -27,11 +27,11 @@ nix = { version = "<= 0.13", optional = true }
 platform-info = { version = "<= 0.0.1", optional = true }
 time = { version = "<= 0.1.42", optional = true }
 ## "problem" dependencies
-# * backtrace: transitive dependency via 'failure'; pin to <= v0.3.30 to avoid increasing MinSRV to v1.33.0
+# * backtrace: transitive dependency via 'failure'; pin to <= v0.3.30 to avoid increasing MinRustV to v1.33.0
 backtrace = ">= 0.3.3, <= 0.3.30"
-# * data-encoding: require 2.1, but 2.2.0 breaks the build for MinSRV 1.31.0
+# * data-encoding: require 2.1, but 2.2.0 breaks the build for MinRustV 1.31.0
 data-encoding = { version = "~2.1", optional = true }
-# * libc: initial utmp support added in 0.2.15, but 0.2.68 break the build for MinSRV 1.31.0
+# * libc: initial utmp support added in 0.2.15, but 0.2.68 break the build for MinRustV 1.31.0
 libc = { version = "0.2.15, <= 0.2.66", optional = true }
 
 
